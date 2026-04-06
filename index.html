@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ayda — Full Stack Developer & Automation Specialist</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy:      #080c14;
+            --navy-2:    #0c1220;
+            --navy-3:    #111827;
+            --navy-4:    #1a2235;
+            --slate:     #2d3a52;
+            --accent:    #4f8ef7;
+            --accent-2:  #6ba3ff;
+            --accent-dim:rgba(79,142,247,0.1);
+            --accent-border:rgba(79,142,247,0.22);
+            --platinum:  #e2e8f4;
+            --silver:    #a0aec0;
+            --muted:     #5a6a85;
+            --line:      rgba(255,255,255,0.06);
+            --card:      rgba(255,255,255,0.025);
+            --card-hover:rgba(79,142,247,0.06);
+        }
+        *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+        html { scroll-behavior:smooth; }
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--navy);
+            color: var(--platinum);
+            overflow-x: hidden;
+            cursor: none;
+        }
+        /* CURSOR */
+        #cur { width:8px; height:8px; background:var(--accent); border-radius:50%; position:fixed; top:0; left:0; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); }
+        #cur-ring { width:32px; height:32px; border:1px solid var(--accent); border-radius:50%; position:fixed; top:0; left:0; pointer-events:none; z-index:9998; transform:translate(-50%,-50%); transition:all 0.15s ease; opacity:0.5; }
+        #cur-ring.big { transform:translate(-50%,-50%) scale(2.2); opacity:0.12; }
+        /* GRID BG */
+        body::after { content:''; position:fixed; inset:0; background-image:linear-gradient(rgba(79,142,247,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(79,142,247,0.02) 1px,transparent 1px); background-size:64px 64px; pointer-events:none; z-index:0; }
+        /* NAV */
+        nav { position:fixed; top:0; left:0; right:0; z-index:100; display:flex; justify-content:space-between; align-items:center; padding:26px 68px; transition:all 0.4s ease; }
+        nav.solid { background:rgba(8,12,20,0.96); backdrop-filter:blur(28px); border-bottom:1px solid var(--line); padding:18px 68px; }
+        .nav-logo { font-family:'Cormorant Garamond',serif; font-size:1.65rem; font-weight:700; color:var(--platinum); text-decoration:none; letter-spacing:-0.5px; }
+        .nav-logo b { color:var(--accent); font-style:italic; }
+        .nav-links { display:flex; gap:40px; list-style:none; align-items:center; }
+        .nav-links a { font-family:'JetBrains Mono',monospace; font-size:0.68rem; text-transform:uppercase; letter-spacing:2.5px; color:var(--muted); text-decoration:none; transition:color 0.25s; }
+        .nav-links a:hover { color:var(--accent); }
+        .nav-cta { background:var(--accent) !important; color:var(--navy) !important; padding:9px 24px; border-radius:6px; font-weight:600 !important; transition:all 0.3s ease !important; }
+        .nav-cta:hover { background:var(--accent-2) !important; color:var(--navy) !important; transform:translateY(-2px); box-shadow:0 10px 30px rgba(79,142,247,0.4) !important; }
+        /* HERO */
+        #home { min-height:100vh; display:flex; align-items:center; padding:140px 68px 90px; position:relative; overflow:hidden; z-index:1; }
+        .orb { position:absolute; border-radius:50%; filter:blur(90px); pointer-events:none; }
+        .orb1 { width:700px; height:700px; background:rgba(79,142,247,0.07); top:-150px; right:-150px; }
+        .orb2 { width:450px; height:450px; background:rgba(79,142,247,0.04); bottom:-100px; left:5%; }
+        .hero-wrap { max-width:1280px; margin:0 auto; display:grid; grid-template-columns:1.15fr 1fr; gap:90px; align-items:center; width:100%; }
+        .h-eye { display:inline-flex; align-items:center; gap:12px; font-family:'JetBrains Mono',monospace; font-size:0.68rem; text-transform:uppercase; letter-spacing:3px; color:var(--accent); margin-bottom:26px; opacity:0; animation:up 0.8s ease 0.2s forwards; }
+        .h-eye::before { content:''; width:24px; height:1px; background:var(--accent); }
+        h1.h-name { font-family:'Cormorant Garamond',serif; font-size:clamp(52px,7.5vw,96px); font-weight:700; line-height:0.9; letter-spacing:-3px; color:var(--platinum); margin-bottom:30px; opacity:0; animation:up 0.8s ease 0.35s forwards; }
+        h1.h-name i { color:var(--accent); font-style:italic; }
+        .h-desc { font-size:1.03rem; line-height:1.8; color:var(--silver); max-width:490px; margin-bottom:46px; font-weight:300; opacity:0; animation:up 0.8s ease 0.5s forwards; }
+        .h-desc strong { color:var(--platinum); font-weight:500; }
+        .h-btns { display:flex; gap:14px; flex-wrap:wrap; opacity:0; animation:up 0.8s ease 0.65s forwards; }
+        .btn-a { display:inline-flex; align-items:center; gap:10px; background:var(--accent); color:var(--navy); padding:14px 36px; border-radius:8px; font-family:'JetBrains Mono',monospace; font-size:0.7rem; text-transform:uppercase; letter-spacing:2px; font-weight:500; text-decoration:none; transition:all 0.3s ease; }
+        .btn-a:hover { background:var(--accent-2); transform:translateY(-3px); box-shadow:0 16px 42px rgba(79,142,247,0.38); }
+        .btn-b { display:inline-flex; align-items:center; gap:10px; background:transparent; color:var(--platinum); padding:14px 36px; border-radius:8px; font-family:'JetBrains Mono',monospace; font-size:0.7rem; text-transform:uppercase; letter-spacing:2px; font-weight:500; text-decoration:none; border:1px solid var(--slate); transition:all 0.3s ease; }
+        .btn-b:hover { border-color:var(--accent); color:var(--accent); transform:translateY(-3px); }
+        /* Hero Panel */
+        .h-panel { background:var(--card); border:1px solid var(--line); border-radius:20px; padding:38px; position:relative; overflow:hidden; opacity:0; animation:fadeIn 1s ease 0.5s forwards; }
+        .h-panel::before { content:''; position:absolute; top:0; left:0; right:0; height:1px; background:linear-gradient(90deg,transparent,var(--accent-border),transparent); }
+        .p-head { display:flex; align-items:center; gap:14px; margin-bottom:28px; padding-bottom:22px; border-bottom:1px solid var(--line); }
+        .p-avatar { width:52px; height:52px; border-radius:14px; background:linear-gradient(135deg,var(--accent),#1d4ed8); display:flex; align-items:center; justify-content:center; font-size:1.4rem; }
+        .p-name { font-family:'Cormorant Garamond',serif; font-size:1.4rem; font-weight:700; color:var(--platinum); }
+        .p-role { font-family:'JetBrains Mono',monospace; font-size:0.63rem; color:var(--accent); text-transform:uppercase; letter-spacing:2px; }
+        .p-stats { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:26px; }
+        .p-st { background:var(--navy-4); border:1px solid var(--line); border-radius:10px; padding:14px; text-align:center; }
+        .p-st-n { font-family:'Cormorant Garamond',serif; font-size:1.9rem; font-weight:700; color:var(--accent); line-height:1; }
+        .p-st-l { font-size:0.68rem; color:var(--muted); margin-top:4px; font-family:'JetBrains Mono',monospace; }
+        .p-stack { display:flex; flex-wrap:wrap; gap:7px; margin-bottom:22px; }
+        .s-pill { background:var(--navy-4); border:1px solid var(--line); border-radius:6px; padding:6px 12px; font-size:0.75rem; color:var(--silver); font-family:'JetBrains Mono',monospace; transition:all 0.3s; }
+        .s-pill:hover { border-color:var(--accent); color:var(--accent); }
+        .p-avail { display:flex; align-items:center; gap:9px; background:rgba(74,222,128,0.06); border:1px solid rgba(74,222,128,0.2); border-radius:8px; padding:12px 16px; font-family:'JetBrains Mono',monospace; font-size:0.66rem; color:#4ade80; text-transform:uppercase; letter-spacing:2px; }
+        .a-dot { width:6px; height:6px; background:#4ade80; border-radius:50%; animation:blink 2s infinite; }
+        @keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0.15;} }
+        /* COMMON */
+        .section { padding:120px 68px; max-width:1280px; margin:0 auto; position:relative; z-index:1; }
+        .divider { height:1px; background:var(--line); }
+        .lbl { display:inline-flex; align-items:center; gap:12px; font-family:'JetBrains Mono',monospace; font-size:0.66rem; text-transform:uppercase; letter-spacing:4px; color:var(--accent); margin-bottom:16px; }
+        .lbl::before { content:''; width:18px; height:1px; background:var(--accent); }
+        h2.sh { font-family:'Cormorant Garamond',serif; font-size:clamp(36px,5vw,56px); font-weight:700; line-height:1.05; letter-spacing:-2px; color:var(--platinum); margin-bottom:14px; }
+        h2.sh i { color:var(--accent); font-style:italic; }
+        /* ABOUT */
+        .ab-grid { display:grid; grid-template-columns:1.2fr 1fr; gap:90px; margin-top:64px; align-items:start; }
+        .ab-p { font-size:1rem; line-height:1.82; color:var(--silver); margin-bottom:22px; font-weight:300; }
+        .ab-p strong { color:var(--platinum); font-weight:500; }
+        .callout { border-left:2px solid var(--accent); padding:18px 24px; background:var(--accent-dim); border-radius:0 10px 10px 0; margin:28px 0; font-size:0.96rem; color:var(--platinum); line-height:1.74; }
+        .sg { margin-bottom:30px; }
+        .sg-l { font-family:'JetBrains Mono',monospace; font-size:0.63rem; text-transform:uppercase; letter-spacing:3px; color:var(--accent); margin-bottom:12px; }
+        .chips { display:flex; flex-wrap:wrap; gap:8px; }
+        .chip { padding:7px 14px; background:var(--card); border:1px solid var(--line); border-radius:6px; font-size:0.82rem; color:var(--silver); transition:all 0.25s; cursor:default; }
+        .chip:hover, .chip.on { background:var(--accent-dim); border-color:var(--accent-border); color:var(--accent); }
+        /* SERVICES */
+        #services { background:var(--navy-2); padding:120px 68px; max-width:100%; }
+        .srv-inner { max-width:1280px; margin:0 auto; }
+        .srv-top { display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:60px; gap:40px; }
+        .srv-intro { font-size:0.96rem; color:var(--silver); line-height:1.72; max-width:380px; font-weight:300; }
+        .srv-grid { display:grid; grid-template-columns:repeat(3,1fr); border:1px solid var(--line); border-radius:16px; overflow:hidden; }
+        .srv { padding:42px 36px; border-right:1px solid var(--line); border-bottom:1px solid var(--line); position:relative; overflow:hidden; transition:background 0.35s ease; }
+        .srv:nth-child(3n) { border-right:none; }
+        .srv:nth-child(4),.srv:nth-child(5),.srv:nth-child(6) { border-bottom:none; }
+        .srv:hover { background:var(--card-hover); }
+        .srv:hover .srv-ico { background:var(--accent); color:var(--navy); border-color:var(--accent); }
+        .srv-n { font-family:'Cormorant Garamond',serif; font-size:3.5rem; font-weight:700; color:rgba(79,142,247,0.07); line-height:1; margin-bottom:16px; transition:color 0.35s; }
+        .srv:hover .srv-n { color:rgba(79,142,247,0.16); }
+        .srv-ico { width:46px; height:46px; border-radius:10px; border:1px solid var(--line); display:flex; align-items:center; justify-content:center; font-size:1.1rem; color:var(--accent); margin-bottom:18px; transition:all 0.35s; }
+        .srv-name { font-family:'Cormorant Garamond',serif; font-size:1.22rem; font-weight:700; color:var(--platinum); margin-bottom:10px; }
+        .srv-desc { font-size:0.87rem; color:var(--muted); line-height:1.68; margin-bottom:18px; }
+        .srv-tags { display:flex; flex-wrap:wrap; gap:6px; }
+        .srv-tag { font-family:'JetBrains Mono',monospace; font-size:0.63rem; color:var(--accent); border:1px solid var(--accent-border); padding:3px 9px; border-radius:4px; }
+        /* PORTFOLIO */
+        .port-head { display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:52px; }
+        .port-n { font-family:'Cormorant Garamond',serif; font-size:6rem; font-weight:700; color:transparent; -webkit-text-stroke:1px rgba(79,142,247,0.16); line-height:1; }
+        .proj-table { display:flex; flex-direction:column; gap:1px; background:var(--line); border-radius:14px; overflow:hidden; }
+        .proj-row { display:grid; grid-template-columns:52px 1fr 1.1fr 130px 72px; gap:20px; align-items:center; padding:24px 28px; background:var(--navy-3); text-decoration:none; position:relative; overflow:hidden; transition:background 0.28s, transform 0.28s; }
+        .proj-row::before { content:''; position:absolute; left:0; top:0; bottom:0; width:0; background:var(--accent); transition:width 0.32s ease; }
+        .proj-row:hover { background:var(--navy-4); transform:translateX(5px); }
+        .proj-row:hover::before { width:2px; }
+        .proj-num { font-family:'JetBrains Mono',monospace; font-size:0.66rem; color:var(--muted); }
+        .proj-title { font-family:'Cormorant Garamond',serif; font-size:1.13rem; font-weight:700; color:var(--platinum); margin-bottom:2px; }
+        .proj-sub { font-size:0.8rem; color:var(--muted); }
+        .proj-tech { display:flex; flex-wrap:wrap; gap:6px; }
+        .pt { font-family:'JetBrains Mono',monospace; font-size:0.62rem; color:var(--silver); background:rgba(255,255,255,0.04); border:1px solid var(--line); padding:3px 8px; border-radius:4px; }
+        .proj-st { display:flex; align-items:center; gap:7px; font-family:'JetBrains Mono',monospace; font-size:0.64rem; }
+        .sd { width:6px; height:6px; border-radius:50%; }
+        .sd-live { background:#4ade80; animation:blink 2s infinite; }
+        .live-c { color:#4ade80; }
+        .proj-arr { display:flex; justify-content:flex-end; color:var(--accent); font-size:0.85rem; transition:transform 0.28s; }
+        .proj-row:hover .proj-arr { transform:translate(3px,-3px); }
+        /* CONTACT */
+        #contact { background:var(--navy-2); padding:120px 68px; max-width:100%; }
+        .ct-inner { max-width:1280px; margin:0 auto; }
+        .ct-grid { display:grid; grid-template-columns:1fr 1fr; gap:90px; align-items:start; margin-top:64px; }
+        .ct-big { font-family:'Cormorant Garamond',serif; font-size:clamp(36px,5vw,56px); font-weight:700; line-height:1.08; letter-spacing:-2px; color:var(--platinum); margin-bottom:22px; }
+        .ct-big i { color:var(--accent); font-style:italic; }
+        .ct-p { font-size:0.97rem; color:var(--silver); line-height:1.74; margin-bottom:34px; font-weight:300; }
+        .ct-links { display:flex; flex-direction:column; gap:11px; }
+        .ct-lk { display:flex; align-items:center; gap:16px; padding:17px 22px; background:var(--card); border:1px solid var(--line); border-radius:10px; text-decoration:none; transition:all 0.3s ease; }
+        .ct-lk:hover { background:var(--accent-dim); border-color:var(--accent-border); transform:translateX(6px); }
+        .ct-ico { width:42px; height:42px; border-radius:9px; display:flex; align-items:center; justify-content:center; font-size:1rem; flex-shrink:0; }
+        .i-wa { background:rgba(37,211,102,0.12); color:#25D366; }
+        .i-em { background:var(--accent-dim); color:var(--accent); }
+        .i-fb { background:rgba(24,119,242,0.12); color:#1877F2; }
+        .i-loc { background:rgba(255,255,255,0.04); color:var(--silver); }
+        .ct-ll { font-family:'JetBrains Mono',monospace; font-size:0.6rem; text-transform:uppercase; letter-spacing:2px; color:var(--muted); margin-bottom:2px; }
+        .ct-lv { font-size:0.92rem; color:var(--platinum); font-weight:500; }
+        .ct-card { background:var(--card); border:1px solid var(--line); border-radius:18px; padding:44px; position:relative; overflow:hidden; }
+        .ct-card::before { content:''; position:absolute; top:0; left:0; right:0; height:1px; background:linear-gradient(90deg,transparent,var(--accent-border),transparent); }
+        .ct-avail { display:inline-flex; align-items:center; gap:8px; font-family:'JetBrains Mono',monospace; font-size:0.64rem; text-transform:uppercase; letter-spacing:2px; color:#4ade80; margin-bottom:22px; }
+        .ct-card h3 { font-family:'Cormorant Garamond',serif; font-size:1.9rem; font-weight:700; color:var(--platinum); margin-bottom:12px; }
+        .ct-card p { font-size:0.92rem; color:var(--silver); line-height:1.72; margin-bottom:26px; }
+        .offer { list-style:none; margin-bottom:30px; }
+        .offer li { display:flex; align-items:center; gap:12px; font-size:0.9rem; color:var(--silver); padding:9px 0; border-bottom:1px solid var(--line); }
+        .offer li i { color:var(--accent); font-size:0.7rem; }
+        .wa-btn { display:flex; align-items:center; justify-content:center; gap:12px; width:100%; background:#25D366; color:#fff; padding:15px; border-radius:10px; font-family:'JetBrains Mono',monospace; font-size:0.75rem; text-transform:uppercase; letter-spacing:2px; font-weight:500; text-decoration:none; transition:all 0.3s ease; }
+        .wa-btn:hover { background:#1ebe59; color:#fff; transform:translateY(-3px); box-shadow:0 20px 50px rgba(37,211,102,0.2); }
+        /* FOOTER */
+        footer { padding:36px 68px; border-top:1px solid var(--line); display:flex; justify-content:space-between; align-items:center; position:relative; z-index:1; }
+        .ft-logo { font-family:'Cormorant Garamond',serif; font-size:1.4rem; font-weight:700; color:var(--platinum); }
+        .ft-logo b { color:var(--accent); font-style:italic; }
+        .ft-copy { font-family:'JetBrains Mono',monospace; font-size:0.64rem; color:var(--muted); }
+        /* ANIMATIONS */
+        @keyframes up { from{opacity:0;transform:translateY(32px);} to{opacity:1;transform:translateY(0);} }
+        @keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
+        .rev { opacity:0; transform:translateY(36px); transition:opacity 0.7s ease, transform 0.7s ease; }
+        .rev.on { opacity:1; transform:translateY(0); }
+        .d1{transition-delay:0.12s;} .d2{transition-delay:0.22s;} .d3{transition-delay:0.32s;}
+        /* RESPONSIVE */
+        @media(max-width:1100px){
+            nav{padding:20px 32px;} nav.solid{padding:16px 32px;}
+            .hero-wrap{grid-template-columns:1fr;} .h-panel{display:none;}
+            .ab-grid{grid-template-columns:1fr;gap:50px;}
+            .srv-grid{grid-template-columns:1fr 1fr;}
+            .srv:nth-child(3n){border-right:1px solid var(--line);}
+            .srv:nth-child(2n){border-right:none;}
+            .srv:nth-child(4){border-bottom:1px solid var(--line);}
+            .srv:nth-child(5),.srv:nth-child(6){border-bottom:none;}
+            .ct-grid{grid-template-columns:1fr;gap:50px;}
+            .proj-row{grid-template-columns:1fr 1.1fr 72px;}
+            .proj-num,.proj-st{display:none;}
+        }
+        @media(max-width:768px){
+            nav{padding:18px 24px;} nav.solid{padding:14px 24px;}
+            .nav-links{display:none;}
+            #home,.section{padding:80px 24px;}
+            #services,#contact{padding:80px 24px;}
+            footer{flex-direction:column;gap:12px;text-align:center;padding:28px 24px;}
+            .srv-grid{grid-template-columns:1fr;}
+            .srv{border-right:none;}
+            .srv:nth-child(n){border-bottom:1px solid var(--line);}
+            .srv:last-child{border-bottom:none;}
+            .proj-row{grid-template-columns:1fr 72px;}
+            .proj-tech{display:none;}
+            .srv-top{flex-direction:column;align-items:flex-start;}
+            .port-head{flex-direction:column;gap:10px;} .port-n{font-size:4rem;}
+        }
+    </style>
+</head>
+<body>
+<div id="cur"></div>
+<div id="cur-ring"></div>
+
+<!-- NAV -->
+<nav id="nav">
+    <a href="#home" class="nav-logo">Ay<b>da</b></a>
+    <ul class="nav-links">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#portfolio">Portfolio</a></li>
+        <li><a href="#contact" class="nav-cta">Hire Me</a></li>
+    </ul>
+</nav>
+
+<!-- HERO -->
+<section id="home">
+    <div class="orb orb1"></div>
+    <div class="orb orb2"></div>
+    <div class="hero-wrap">
+        <div>
+            <div class="h-eye">Full Stack Developer · Algeria</div>
+            <h1 class="h-name">Building<br>the <i>digital</i><br>backbone</h1>
+            <p class="h-desc">
+                Hi, I'm <strong>Ayda</strong> — a Full Stack Developer specializing in modern web applications,
+                <strong>N8N workflow automation</strong>, and <strong>Odoo ERP customization</strong>.
+                I turn complex business challenges into clean, scalable solutions.
+            </p>
+            <div class="h-btns">
+                <a href="#contact" class="btn-a"><i class="fas fa-paper-plane"></i> Work With Me</a>
+                <a href="#portfolio" class="btn-b"><i class="fas fa-eye"></i> View Projects</a>
+            </div>
+        </div>
+        <div class="h-panel">
+            <div class="p-head">
+                <div class="p-avatar">👩‍💻</div>
+                <div>
+                    <div class="p-name">Ayda</div>
+                    <div class="p-role">Full Stack · ERP · Automation</div>
+                </div>
+            </div>
+            <div class="p-stats">
+                <div class="p-st"><div class="p-st-n">8+</div><div class="p-st-l">Projects</div></div>
+                <div class="p-st"><div class="p-st-n">M2</div><div class="p-st-l">Degree</div></div>
+                <div class="p-st"><div class="p-st-n">4+</div><div class="p-st-l">Yrs Exp.</div></div>
+            </div>
+            <div class="p-stack">
+                <span class="s-pill">React</span><span class="s-pill">Node.js</span>
+                <span class="s-pill">N8N</span><span class="s-pill">Odoo</span>
+                <span class="s-pill">PHP</span><span class="s-pill">AWS</span>
+                <span class="s-pill">Docker</span><span class="s-pill">PostgreSQL</span>
+            </div>
+            <div class="p-avail"><span class="a-dot"></span> Available for new projects</div>
+        </div>
+    </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ABOUT -->
+<section id="about" class="section">
+    <div class="lbl rev">About Me</div>
+    <h2 class="sh rev d1">Code. <i>Automate.</i> Deliver.</h2>
+    <div class="ab-grid">
+        <div>
+            <p class="ab-p rev">I'm <strong>Ayda</strong>, a Full Stack Developer holding a <strong>Master's degree (M2)</strong> from University Constantine 2. I currently work as a frontend developer, but my expertise spans the entire stack — from polished user interfaces to cloud infrastructure and deployment.</p>
+            <div class="callout rev">I specialize in <strong>N8N workflow automation</strong> — designing smart pipelines that connect your tools, eliminate repetitive tasks, and free your team to focus on what truly matters.</div>
+            <p class="ab-p rev">My <strong>Odoo ERP</strong> expertise covers deep customization across CRM, invoicing, accounting, sales, contacts, and beyond — tailoring the platform precisely to your business operations.</p>
+            <p class="ab-p rev">From <strong>React.js</strong> and <strong>Node.js</strong> to <strong>Docker</strong> and <strong>AWS</strong>, I handle every layer with the same commitment to quality, performance, and reliability.</p>
+        </div>
+        <div>
+            <div class="sg rev">
+                <div class="sg-l">Frontend</div>
+                <div class="chips">
+                    <span class="chip on">React.js</span><span class="chip">HTML5</span><span class="chip">CSS3</span>
+                    <span class="chip">JavaScript</span><span class="chip">Bootstrap</span><span class="chip">MUI</span><span class="chip">i18n</span>
+                </div>
+            </div>
+            <div class="sg rev d1">
+                <div class="sg-l">Backend</div>
+                <div class="chips">
+                    <span class="chip">Node.js</span><span class="chip">PHP</span><span class="chip">PostgreSQL</span><span class="chip">MySQL</span>
+                </div>
+            </div>
+            <div class="sg rev d2">
+                <div class="sg-l">Automation & ERP</div>
+                <div class="chips">
+                    <span class="chip on">N8N</span><span class="chip on">Odoo ERP</span>
+                    <span class="chip">CRM</span><span class="chip">E-Invoicing</span><span class="chip">Accounting</span><span class="chip">Sales Modules</span>
+                </div>
+            </div>
+            <div class="sg rev d3">
+                <div class="sg-l">Cloud & DevOps</div>
+                <div class="chips">
+                    <span class="chip">Docker</span><span class="chip">AWS S3</span><span class="chip">AWS EC2</span><span class="chip">AWS RDS</span><span class="chip">AWS ECR</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SERVICES -->
+<div id="services">
+    <div class="srv-inner">
+        <div class="srv-top">
+            <div>
+                <div class="lbl rev">What I Do</div>
+                <h2 class="sh rev d1">Services &<br><i>Expertise</i></h2>
+            </div>
+            <p class="srv-intro rev">End-to-end web development, intelligent automation, and ERP systems — every piece of your digital stack, handled with precision.</p>
+        </div>
+        <div class="srv-grid rev">
+            <div class="srv">
+                <div class="srv-n">01</div>
+                <div class="srv-ico"><i class="fas fa-code"></i></div>
+                <div class="srv-name">Full Stack Development</div>
+                <p class="srv-desc">Complete web applications from UI to database, built with modern frameworks and deployed on scalable cloud infrastructure.</p>
+                <div class="srv-tags"><span class="srv-tag">React</span><span class="srv-tag">Node.js</span><span class="srv-tag">PHP</span><span class="srv-tag">AWS</span></div>
+            </div>
+            <div class="srv">
+                <div class="srv-n">02</div>
+                <div class="srv-ico"><i class="fas fa-project-diagram"></i></div>
+                <div class="srv-name">N8N Workflow Automation</div>
+                <p class="srv-desc">Build powerful automated workflows with N8N — connect apps, automate data flows, trigger smart actions, and eliminate manual work.</p>
+                <div class="srv-tags"><span class="srv-tag">N8N</span><span class="srv-tag">Webhooks</span><span class="srv-tag">API Integration</span></div>
+            </div>
+            <div class="srv">
+                <div class="srv-n">03</div>
+                <div class="srv-ico"><i class="fas fa-cubes"></i></div>
+                <div class="srv-name">Odoo ERP Customization</div>
+                <p class="srv-desc">Deep Odoo expertise — custom module development and configuration across CRM, accounting, invoicing, sales, and contacts.</p>
+                <div class="srv-tags"><span class="srv-tag">Odoo</span><span class="srv-tag">CRM</span><span class="srv-tag">Accounting</span><span class="srv-tag">Sales</span></div>
+            </div>
+            <div class="srv">
+                <div class="srv-n">04</div>
+                <div class="srv-ico"><i class="fas fa-cloud"></i></div>
+                <div class="srv-name">Cloud & DevOps</div>
+                <p class="srv-desc">AWS deployment, Docker containerization, and CI/CD pipelines for resilient, production-ready environments.</p>
+                <div class="srv-tags"><span class="srv-tag">AWS</span><span class="srv-tag">Docker</span><span class="srv-tag">CI/CD</span></div>
+            </div>
+            <div class="srv">
+                <div class="srv-n">05</div>
+                <div class="srv-ico"><i class="fas fa-database"></i></div>
+                <div class="srv-name">Database Architecture</div>
+                <p class="srv-desc">Robust database design and query optimization with PostgreSQL and MySQL, engineered for performance and long-term reliability.</p>
+                <div class="srv-tags"><span class="srv-tag">PostgreSQL</span><span class="srv-tag">MySQL</span><span class="srv-tag">Optimization</span></div>
+            </div>
+            <div class="srv">
+                <div class="srv-n">06</div>
+                <div class="srv-ico"><i class="fas fa-vector-square"></i></div>
+                <div class="srv-name">UI/UX & Responsive Design</div>
+                <p class="srv-desc">Pixel-perfect, mobile-first interfaces combining strong visual design with seamless user experience across all devices.</p>
+                <div class="srv-tags"><span class="srv-tag">UI/UX</span><span class="srv-tag">Bootstrap</span><span class="srv-tag">MUI</span></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- PORTFOLIO -->
+<section id="portfolio" class="section">
+    <div class="port-head">
+        <div>
+            <div class="lbl rev">Selected Work</div>
+            <h2 class="sh rev d1">Live <i>Projects</i></h2>
+        </div>
+        <div class="port-n rev">8</div>
+    </div>
+    <div class="proj-table">
+        <a href="https://zaggat-tours.com/" target="_blank" class="proj-row rev">
+            <span class="proj-num">01</span>
+            <div><div class="proj-title">Zaggat Tours</div><div class="proj-sub">Tourism & travel booking platform</div></div>
+            <div class="proj-tech"><span class="pt">PHP</span><span class="pt">Bootstrap</span><span class="pt">JS</span></div>
+            <div class="proj-st"><span class="sd sd-live"></span><span class="live-c">Live</span></div>
+            <div class="proj-arr"><i class="fas fa-arrow-up-right-from-square"></i></div>
+        </a>
+        <a href="https://virta-calls.com/" target="_blank" class="proj-row rev d1">
+            <span class="proj-num">02</span>
+            <div><div class="proj-title">Virta Calls</div><div class="proj-sub">Real-time video calling & messaging platform</div></div>
+            <div class="proj-tech"><span class="pt">HTML</span><span class="pt">CSS</span><span class="pt">PHP</span><span class="pt">JS</span></div>
+            <div class="proj-st"><span class="sd sd-live"></span><span class="live-c">Live</span></div>
+            <div class="proj-arr"><i class="fas fa-arrow-up-right-from-square"></i></div>
+        </a>
+        <a href="https://imoujar.com/" target="_blank" class="proj-row rev d2">
+            <span class="proj-num">03</span>
+            <div><div class="proj-title">Imoujar</div><div class="proj-sub">Digital services marketplace</div></div>
+            <div class="proj-tech"><span class="pt">React</span><span class="pt">Node.js</span></div>
+            <div class="proj-st"><span class="sd sd-live"></span><span class="live-c">Live</span></div>
+            <div class="proj-arr"><i class="fas fa-arrow-up-right-from-square"></i></div>
+        </a>
+        <a href="https://hbtronics.ae/" target="_blank" class="proj-row rev">
+            <span class="proj-num">04</span>
+            <div><div class="proj-title">HB Tronics UAE</div><div class="proj-sub">Electronics e-commerce — UAE & Middle East</div></div>
+            <div class="proj-tech"><span class="pt">React</span><span class="pt">MUI</span><span class="pt">i18n</span></div>
+            <div class="proj-st"><span class="sd sd-live"></span><span class="live-c">Live</span></div>
+            <div class="proj-arr"><i class="fas fa-arrow-up-right-from-square"></i></div>
+        </a>
+        <a href="https://ehare-tech.com" target="_blank" class="proj-row rev d1">
+            <span class="proj-num">05</span>
+            <div><div class="proj-title">Ehare-Tech</div><div class="proj-sub">Accounting platform — CRM, E-Invoicing, E-Document, Dashboard</div></div>
+            <div class="proj-tech"><span class="pt">React</span><span class="pt">MUI</span><span class="pt">PHP</span></div>
+            <div class="proj-st"><span class="sd sd-live"></span><span class="live-c">Live</span></div>
+            <div class="proj-arr"><i class="fas fa-arrow-up-right-from-square"></i></div>
+        </a>
+        <a href="https://www.maison-azea.com/" target="_blank" class="proj-row rev d2">
+            <span class="proj-num">06</span>
+            <div><div class="proj-title">Maison Azea</div><div class="proj-sub">Luxury home & lifestyle brand website</div></div>
+            <div class="proj-tech"><span class="pt">React</span><span class="pt">UI/UX</span></div>
+            <div class="proj-st"><span class="sd sd-live"></span><span class="live-c">Live</span></div>
+            <div class="proj-arr"><i class="fas fa-arrow-up-right-from-square"></i></div>
+        </a>
+        <a href="https://samdo.ae" target="_blank" class="proj-row rev">
+            <span class="proj-num">07</span>
+            <div><div class="proj-title">Samdo Auto Parts</div><div class="proj-sub">Car parts marketplace — UAE & Middle East, multi-language</div></div>
+            <div class="proj-tech"><span class="pt">React</span><span class="pt">MUI</span><span class="pt">i18n</span></div>
+            <div class="proj-st"><span class="sd sd-live"></span><span class="live-c">Live</span></div>
+            <div class="proj-arr"><i class="fas fa-arrow-up-right-from-square"></i></div>
+        </a>
+        <a href="https://tanemirt-tech.com/" target="_blank" class="proj-row rev d1">
+            <span class="proj-num">08</span>
+            <div><div class="proj-title">Tanemirt Tech</div><div class="proj-sub">Technology company website & IT services</div></div>
+            <div class="proj-tech"><span class="pt">React</span><span class="pt">MUI</span></div>
+            <div class="proj-st"><span class="sd sd-live"></span><span class="live-c">Live</span></div>
+            <div class="proj-arr"><i class="fas fa-arrow-up-right-from-square"></i></div>
+        </a>
+    </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CONTACT -->
+<div id="contact">
+    <div class="ct-inner">
+        <div class="lbl rev">Get In Touch</div>
+        <div class="ct-grid">
+            <div>
+                <h2 class="ct-big rev">Let's build<br>something <i>remarkable</i></h2>
+                <p class="ct-p rev">Whether you need a web application, N8N automation, or Odoo ERP customization — I'd love to hear about your project and discuss how I can help.</p>
+                <div class="ct-links rev">
+                    <a href="https://wa.me/213540142226?text=Hi%20Ayda,%20I%27m%20interested%20in%20working%20with%20you." target="_blank" class="ct-lk">
+                        <div class="ct-ico i-wa"><i class="fab fa-whatsapp"></i></div>
+                        <div><div class="ct-ll">WhatsApp</div><div class="ct-lv">+213 540 142 226</div></div>
+                    </a>
+                    <a href="mailto:thesisscript2@gmail.com" class="ct-lk">
+                        <div class="ct-ico i-em"><i class="fas fa-envelope"></i></div>
+                        <div><div class="ct-ll">Email</div><div class="ct-lv">thesisscript2@gmail.com</div></div>
+                    </a>
+                    <a href="https://www.facebook.com/bibliotheque.de.creativite/about" target="_blank" class="ct-lk">
+                        <div class="ct-ico i-fb"><i class="fab fa-facebook-f"></i></div>
+                        <div><div class="ct-ll">Facebook</div><div class="ct-lv">Bibliothèque de Créativité</div></div>
+                    </a>
+                    <div class="ct-lk" style="cursor:default;">
+                        <div class="ct-ico i-loc"><i class="fas fa-location-dot"></i></div>
+                        <div><div class="ct-ll">Location</div><div class="ct-lv">Algeria 🇩🇿</div></div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="ct-card rev">
+                    <div class="ct-avail"><span class="a-dot"></span> Open to new projects</div>
+                    <h3>Ready to start?</h3>
+                    <p>I'm currently available for freelance work, long-term partnerships, and consulting engagements.</p>
+                    <ul class="offer">
+                        <li><i class="fas fa-check-circle"></i> Full Stack Web Applications</li>
+                        <li><i class="fas fa-check-circle"></i> N8N Workflow Automation</li>
+                        <li><i class="fas fa-check-circle"></i> Odoo ERP — CRM, Invoicing, Accounting, Sales</li>
+                        <li><i class="fas fa-check-circle"></i> Cloud Deployment & DevOps</li>
+                        <li><i class="fas fa-check-circle"></i> API Development & System Integration</li>
+                        <li><i class="fas fa-check-circle"></i> Responsive UI/UX Design</li>
+                    </ul>
+                    <a href="https://wa.me/213540142226?text=Hi%20Ayda,%20I%27m%20interested%20in%20working%20with%20you." target="_blank" class="wa-btn">
+                        <i class="fab fa-whatsapp" style="font-size:1.1rem;"></i>
+                        Start a Conversation
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <div class="ft-logo">Ay<b>da</b></div>
+    <div class="ft-copy">© 2025 Ayda · Full Stack Developer · Algeria</div>
+</footer>
+
+<script>
+    const cur = document.getElementById('cur');
+    const ring = document.getElementById('cur-ring');
+    document.addEventListener('mousemove', e => {
+        cur.style.left = e.clientX + 'px'; cur.style.top = e.clientY + 'px';
+        setTimeout(() => { ring.style.left = e.clientX + 'px'; ring.style.top = e.clientY + 'px'; }, 70);
+    });
+    document.querySelectorAll('a,button,.chip,.proj-row,.srv,.ct-lk').forEach(el => {
+        el.addEventListener('mouseenter', () => ring.classList.add('big'));
+        el.addEventListener('mouseleave', () => ring.classList.remove('big'));
+    });
+    window.addEventListener('scroll', () => {
+        document.getElementById('nav').classList.toggle('solid', scrollY > 50);
+    });
+    const obs = new IntersectionObserver(entries => {
+        entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('on'); });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.rev').forEach(el => obs.observe(el));
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+        a.addEventListener('click', e => {
+            e.preventDefault();
+            document.querySelector(a.getAttribute('href'))?.scrollIntoView({ behavior:'smooth' });
+        });
+    });
+</script>
+</body>
+</html>
